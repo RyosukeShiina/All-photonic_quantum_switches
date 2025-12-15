@@ -1,0 +1,61 @@
+function SingleResults = SingleResults_from_ESs(LA, rB, rC, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N)
+
+%k=3
+
+%SingleResults = SingleResults_from_ESs(3, 2, 3 0.12, 0.995, 0.999995, 0.9975, 0.99, 2, 15, 0.3, 1, 10000000)
+
+%1<rB<rC
+LB=LA*rB;
+LC=LA*rC;
+
+[Xes1, Zes1] = OuterSwappingAndConstruction(LA, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N);
+[Xes2, Zes2] = OuterSwappingAndConstruction(LB, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N);
+[Xes3, Zes3] = OuterSwappingAndConstruction(LC, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N);
+
+[Xes4, Zes4] = InnerSwappingAndConstruction(LC, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N);
+[Xes5, Zes5] = InnerSwappingAndConstruction(LC, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N);
+[Xes6, Zes6] = InnerSwappingAndConstruction(LC, sigGKP, etas, etam, etad, etac, Lcavity, k, v, N);
+
+PauliTable = sourcePaulis();
+Ns = size(PauliTable, 1);
+if Ns ~= 24
+   error('This function assumes Ns = 24 (24 error types).');
+end
+
+probs = cell(Ns,1);
+
+%probs{1}  = Xes1;
+probs{2}  = Zes1;
+probs{3}  = Xes1;
+%probs{4}  = Zes1;
+
+%probs{5}  = Xes2;
+probs{6}  = Zes2;
+probs{7}  = Xes2;
+%probs{8}  = Zes2;
+
+%probs{9}  = Xes3;
+probs{10}  = Zes3;
+probs{11}  = Xes3;
+%probs{12}  = Zes3;
+
+probs{13}  = Xes4;
+%probs{14}  = Zes4;
+%probs{15}  = Xes4;
+probs{16}  = Zes4;
+
+probs{17}  = Xes5;
+%probs{18}  = Zes5;
+%probs{19}  = Xes5;
+probs{20}  = Zes5;
+
+probs{21}  = Xes6;
+%probs{22}  = Zes6;
+%probs{23}  = Xes6;
+probs{24}  = Zes6;
+
+
+SingleResults = struct();
+SingleResults.Probs = probs;
+
+end
